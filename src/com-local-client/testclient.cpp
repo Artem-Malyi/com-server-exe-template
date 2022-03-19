@@ -102,23 +102,23 @@ int testComServer()
     if (FAILED(hr))
         return -1;
 
-    IClassFactory* pICF = nullptr;
-    hr = CoGetClassObject(CLSID_AddObject, CLSCTX_LOCAL_SERVER, nullptr, IID_IClassFactory, (void**)&pICF);
+    IClassFactory* pIcf = nullptr;
+    hr = CoGetClassObject(CLSID_AddObject, CLSCTX_LOCAL_SERVER, nullptr, IID_IClassFactory, (void**)&pIcf);
     ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
     LOG("CoGetClassObject() returned 0x%08x: %ws", hr, wsMessageBuffer);
     if (FAILED(hr)) {
         CoUninitialize();
-        exit(-2);
+        return -2;
     }
 
     IAdd* pIAdd = nullptr;
-    hr = pICF->CreateInstance(nullptr, IID_IAdd, (void**)&pIAdd);
+    hr = pIcf->CreateInstance(nullptr, IID_IAdd, (void**)&pIAdd);
     ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
     LOG("IClassFactory->CreateInstance() returned 0x%08x: %ws", hr, wsMessageBuffer);
     if (FAILED(hr)) {
-        pICF->Release();
+        pIcf->Release();
         CoUninitialize();
-        exit(-3);
+        return -3;
     }
 
     long n1 = 100, n2 = 200;
@@ -130,7 +130,7 @@ int testComServer()
     ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
     LOG("IAdd->PerformAddition() returned 0x%08x: %ws", hr, wsMessageBuffer);
     if (FAILED(hr)) {
-        pICF->Release();
+        pIcf->Release();
         pIAdd->Release();
         CoUninitialize();
         return -4;
@@ -142,7 +142,7 @@ int testComServer()
     //
     // Release the reference to the COM object when we're done
     //
-    pICF->Release();
+    pIcf->Release();
     pIAdd->Release();
 
     CoUninitialize();

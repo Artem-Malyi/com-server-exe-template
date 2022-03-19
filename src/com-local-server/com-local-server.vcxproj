@@ -117,6 +117,7 @@
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
       <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
+      <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
     <Midl>
       <OutputDirectory>$(IntDir)</OutputDirectory>
@@ -126,7 +127,8 @@
     </Midl>
     <PostBuildEvent>
       <Command>xcopy /f /y $(IntDir)AddObject_h.h ..\common\
-xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
+xcopy /f /y $(IntDir)AddObject_i.c ..\common\
+xcopy /f /y *.reg ..\..\out\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -148,6 +150,7 @@ xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
       <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
+      <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
     <Midl>
       <OutputDirectory>$(IntDir)</OutputDirectory>
@@ -157,7 +160,8 @@ xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
     </Midl>
     <PostBuildEvent>
       <Command>xcopy /f /y $(IntDir)AddObject_h.h ..\common\
-xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
+xcopy /f /y $(IntDir)AddObject_i.c ..\common\
+xcopy /f /y *.reg ..\..\out\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -175,6 +179,7 @@ xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
       <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
+      <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
     <Midl>
       <OutputDirectory>$(IntDir)</OutputDirectory>
@@ -185,7 +190,8 @@ xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
     </Midl>
     <PostBuildEvent>
       <Command>xcopy /f /y $(IntDir)AddObject_h.h ..\common\
-xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
+xcopy /f /y $(IntDir)AddObject_i.c ..\common\
+xcopy /f /y *.reg ..\..\out\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -207,6 +213,7 @@ xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
       <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
+      <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
     <Midl>
       <OutputDirectory>$(IntDir)</OutputDirectory>
@@ -216,7 +223,8 @@ xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
     </Midl>
     <PostBuildEvent>
       <Command>xcopy /f /y $(IntDir)AddObject_h.h ..\common\
-xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
+xcopy /f /y $(IntDir)AddObject_i.c ..\common\
+xcopy /f /y *.reg ..\..\out\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

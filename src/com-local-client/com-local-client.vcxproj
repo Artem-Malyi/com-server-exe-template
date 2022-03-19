@@ -24,6 +24,7 @@
     <ProjectGuid>{89de9b67-2310-415c-9171-d07a067ae4a5}</ProjectGuid>
     <RootNamespace>comlocalclient</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>test-client</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
