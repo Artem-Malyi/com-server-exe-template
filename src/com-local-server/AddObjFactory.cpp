@@ -22,7 +22,7 @@ CAddObjFactory::~CAddObjFactory() {
     MessageBox(
         nullptr,
         L"CAddObjFactory is being destructed. Make sure you see this message, if not, you might have memory leak!",
-        L"CAddObjFactory Destructor",
+        L"SuperFast.AddObj COM LocalServer Message",
         MB_OK | MB_SETFOREGROUND
     );
 }

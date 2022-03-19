@@ -42,14 +42,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	if (strstr(lpCmdLine, "/Embedding") || strstr(lpCmdLine, "-Embedding"))
 	{
 		// for debug
-		MessageBox(nullptr, L"AddObj Server[LOCAL] is registering the classes", L"[LOCAL]EXE Message!", MB_OK | MB_SETFOREGROUND);
+		MessageBox(nullptr, L"AddObj Server[LOCAL] is registering its classes", L"SuperFast.AddObj COM LocalServer Message", MB_OK | MB_SETFOREGROUND);
 
-		// Create the AddObj class object.
-		CAddObjFactory addObjFactory;
+		// Create the AddObj factory class object.
+		CAddObjFactory* pFactory = new CAddObjFactory();
 
 		// Register the AddObj Factory.
 		DWORD regId = 0;
-		hr = CoRegisterClassObject(CLSID_AddObject, (IClassFactory*)&addObjFactory, CLSCTX_LOCAL_SERVER, REGCLS_MULTIPLEUSE, &regId);
+		hr = CoRegisterClassObject(CLSID_AddObject, pFactory, CLSCTX_LOCAL_SERVER, REGCLS_MULTIPLEUSE, &regId);
 		if (FAILED(hr))
 		{
 			ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
@@ -60,12 +60,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 		// Now just run until a quit message is sent,
 		// in responce to the final release.
+		LOG("Entering main thread message loop");
 		MSG message = { 0 };
 		while (GetMessage(&message, 0, 0, 0))
 		{
 			TranslateMessage(&message);
 			DispatchMessage(&message);
 		}
+		LOG("Exiting main thread message loop");
 
 		// All done, so remove class object.
 		hr = CoRevokeClassObject(regId);
@@ -75,6 +77,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	// Terminate COM.
 	CoUninitialize();
-	MessageBox(nullptr, L"[LOCAL] Server is dying", L"[LOCAL]EXE Message!", MB_OK | MB_SETFOREGROUND);
+	MessageBox(nullptr, L"AddObj Server[LOCAL] is exiting", L"SuperFast.AddObj COM LocalServer Message", MB_OK | MB_SETFOREGROUND);
 	return 0;
 }

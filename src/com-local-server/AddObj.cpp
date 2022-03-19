@@ -27,7 +27,7 @@ CAddObj::~CAddObj()
     MessageBox(
         nullptr,
         L"CAddObj is being destructed. Make sure you see this message, if not, you might have memory leak!",
-        L"CAddObj Destructor",
+        L"SuperFast.AddObj COM LocalServer Message",
         MB_OK | MB_SETFOREGROUND
     );
 }
