@@ -4,7 +4,7 @@
 //
 #include "..\common\pch.h"
 #include "AddObj.h"
-#include "IAdd_i.c" // Contains the interface IIDs
+#include "AddObject_i.c" // Contains the interface IIDs
 #include "utilities.h"
 
 #define DEBUG_LOGGER_ENABLED

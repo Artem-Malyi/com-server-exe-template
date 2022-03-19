@@ -3,7 +3,7 @@
 // Contains the C++ class declaration for the IAdd interface
 //
 #pragma once
-#include "IAdd_h.h" // Contains the C++ style interface declarations.
+#include "AddObject_h.h" // Contains the C++ style interface declarations.
 
 class CAddObj: public IAdd
 {

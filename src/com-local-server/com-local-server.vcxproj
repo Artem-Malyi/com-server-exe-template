@@ -76,7 +76,7 @@
     <IntDir>..\..\tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)32d</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\common;$(IntDir)</IncludePath>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -84,7 +84,7 @@
     <IntDir>..\..\tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)32</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\common;$(IntDir)</IncludePath>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -92,7 +92,7 @@
     <IntDir>..\..\tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)64d</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\common;$(IntDir)</IncludePath>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -100,7 +100,7 @@
     <IntDir>..\..\tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)64</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\common;$(IntDir)</IncludePath>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -125,8 +125,8 @@
       <TypeLibraryName />
     </Midl>
     <PostBuildEvent>
-      <Command>xcopy /f /y $(IntDir)IAdd_h.h ..\common\
-xcopy /f /y $(IntDir)IAdd_i.c ..\common\</Command>
+      <Command>xcopy /f /y $(IntDir)AddObject_h.h ..\common\
+xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -156,8 +156,8 @@ xcopy /f /y $(IntDir)IAdd_i.c ..\common\</Command>
       <TypeLibraryName />
     </Midl>
     <PostBuildEvent>
-      <Command>xcopy /f /y $(IntDir)IAdd_h.h ..\common\
-xcopy /f /y $(IntDir)IAdd_i.c ..\common\</Command>
+      <Command>xcopy /f /y $(IntDir)AddObject_h.h ..\common\
+xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -184,8 +184,8 @@ xcopy /f /y $(IntDir)IAdd_i.c ..\common\</Command>
       <ValidateAllParameters>true</ValidateAllParameters>
     </Midl>
     <PostBuildEvent>
-      <Command>xcopy /f /y $(IntDir)IAdd_h.h ..\common\
-xcopy /f /y $(IntDir)IAdd_i.c ..\common\</Command>
+      <Command>xcopy /f /y $(IntDir)AddObject_h.h ..\common\
+xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -215,8 +215,8 @@ xcopy /f /y $(IntDir)IAdd_i.c ..\common\</Command>
       <TypeLibraryName />
     </Midl>
     <PostBuildEvent>
-      <Command>xcopy /f /y $(IntDir)IAdd_h.h ..\common\
-xcopy /f /y $(IntDir)IAdd_i.c ..\common\</Command>
+      <Command>xcopy /f /y $(IntDir)AddObject_h.h ..\common\
+xcopy /f /y $(IntDir)AddObject_i.c ..\common\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -239,17 +239,17 @@ xcopy /f /y $(IntDir)IAdd_i.c ..\common\</Command>
     <ClCompile Include="AddObj.cpp" />
     <ClCompile Include="AddObjFactory.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Exports.cpp" />
-    <ClCompile Include="Registry.cpp" />
+    <ClCompile Include="exports.cpp" />
+    <ClCompile Include="registry.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="IAdd.idl" />
+    <Midl Include="AddObject.idl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Exports.def" />
+    <None Include="exports.def" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Resource.rc" />
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,10 +1,10 @@
 // main.cpp : Defines the entry point for the DLL application.
 #include "..\common\pch.h"
-#include "..\common\utilities.h"
 
 #include "AddObjFactory.h"
-#include "IAdd_h.h"
-#include "IAdd_i.c"
+#include "AddObject_h.h"
+#include "AddObject_i.c"
+#include "utilities.h"
 
 #define DEBUG_LOGGER_ENABLED
 #define FILE_LOGGER_ENABLED
@@ -25,9 +25,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	WCHAR wsMessageBuffer[MAX_PATH] = { 0 };
 
 	// Let's register the type lib to get the 'free' type library marsahler.
-	ITypeLib* pTLib = nullptr;
-	hr = LoadTypeLibEx(L"IAdd.tlb", REGKIND_REGISTER, &pTLib);
-	pTLib->Release();
+	ITypeLib* pTypeLib = nullptr;
+	hr = LoadTypeLibEx(L"IAdd.tlb", REGKIND_REGISTER, &pTypeLib);
+	pTypeLib->Release();
 	ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
 	LOG("LoadTypeLibEx() returned 0x%08x: %ws", hr, wsMessageBuffer);
 	if (FAILED(hr)) {
@@ -39,14 +39,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	if (strstr(lpCmdLine, "/Embedding") || strstr(lpCmdLine, "-Embedding"))
 	{
 		// for debug
-		MessageBox(NULL, L"MyCar Server[LOCAL] is registering the classes", L"[LOCAL]EXE Message!", MB_OK | MB_SETFOREGROUND);
+		MessageBox(nullptr, L"AddObj Server[LOCAL] is registering the classes", L"[LOCAL]EXE Message!", MB_OK | MB_SETFOREGROUND);
 
-		// Create the MyCar class object.
-		CAddObjFactory myCarClassFactory;
+		// Create the AddObj class object.
+		CAddObjFactory addObjFactory;
 
-		// Register the MyCar Factory.
-		DWORD regID = 0;
-		hr = CoRegisterClassObject(CLSID_AddObject, (IClassFactory*)&myCarClassFactory, CLSCTX_LOCAL_SERVER, REGCLS_MULTIPLEUSE, &regID);
+		// Register the AddObj Factory.
+		DWORD regId = 0;
+		hr = CoRegisterClassObject(CLSID_AddObject, (IClassFactory*)&addObjFactory, CLSCTX_LOCAL_SERVER, REGCLS_MULTIPLEUSE, &regId);
 		if (FAILED(hr))
 		{
 			ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
@@ -65,13 +65,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 
 		// All done, so remove class object.
-		hr = CoRevokeClassObject(regID);
+		hr = CoRevokeClassObject(regId);
 		ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
 		LOG("CoRevokeClassObject() returned 0x%08x: %ws", hr, wsMessageBuffer);
 	}
 
 	// Terminate COM.
 	CoUninitialize();
-	MessageBox(NULL, L"[LOCAL] Server is dying", L"[LOCAL]EXE Message!", MB_OK | MB_SETFOREGROUND);
+	MessageBox(nullptr, L"[LOCAL] Server is dying", L"[LOCAL]EXE Message!", MB_OK | MB_SETFOREGROUND);
 	return 0;
 }

@@ -1,11 +1,12 @@
 // com-local-client.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#define BUILD_CLIENT_WITH_TYPELIB
-//#define BUILD_CLIENT_WITH_IDL_HEADERS
+//#define BUILD_CLIENT_WITH_TYPELIB
+#define BUILD_CLIENT_WITH_IDL_HEADERS
 
 #include <iostream>
 #include <objbase.h>
+#include "utilities.h"
 
 #define DEBUG_LOGGER_ENABLED
 #define FILE_LOGGER_ENABLED
@@ -13,14 +14,13 @@
 #include "logger.h"
 
 int testComServer();
-bool errorDescription(DWORD dwErrorCode, PWSTR wszMsgBuff, DWORD wsMessageBufferSize);
 
 #ifdef BUILD_CLIENT_WITH_IDL_HEADERS
 //
 // To make this work enable the Post-Build event in com-local-server project
 //
-#include "IAdd_h.h"
-#include "IAdd_i.c"
+#include "AddObject_h.h"
+#include "AddObject_i.c"
 #endif
 
 #ifdef BUILD_CLIENT_WITH_TYPELIB
@@ -28,10 +28,10 @@ bool errorDescription(DWORD dwErrorCode, PWSTR wszMsgBuff, DWORD wsMessageBuffer
 // Here we do a #import on the DLL, you can also do a #import on the .TLB
 // The #import directive generates two files (.tlh/.tli) in the output folders.
 //
-//#import "IAdd.tlb"
+//#import "AddObject.tlb"
 #ifdef _WIN64
     #ifdef _DEBUG
-        #import "com-local-server64d.dll"
+        #import "com-local-server64d.exe"
     #else
         #import "com-local-server64.dll"
     #endif
@@ -70,7 +70,7 @@ int testComServer()
         // method invocations to the internal raw interface pointer.
         //
         hr = pFastAddAlgorithm.CreateInstance("SuperFast.AddObj");
-        errorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
+        ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
         LOG("CoCreateInstance() returned 0x%08x: %ws", hr, wsMessageBuffer);
         if (FAILED(hr))
             return -2;
@@ -90,38 +90,50 @@ int testComServer()
 
     return 0;
 }
-#endif
+#endif // BUILD_CLIENT_WITH_TYPELIB
 
 #ifdef BUILD_CLIENT_WITH_IDL_HEADERS
 int testComServer()
 {
     LOG("Entering");
+    WCHAR wsMessageBuffer[MAX_PATH] = { 0 };
 
-    HRESULT hr = CoInitialize(NULL);
+    HRESULT hr = CoInitialize(nullptr);
     if (FAILED(hr))
         return -1;
 
-    WCHAR wsMessageBuffer[512] = { 0 };
-
-    IAdd* pFastAddAlgorithm = nullptr;
-    hr = CoCreateInstance(CLSID_AddObject, NULL, CLSCTX_INPROC_SERVER, IID_IAdd, (void**)&pFastAddAlgorithm);
-    errorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
-    LOG("CoCreateInstance() returned 0x%08x: %ws", hr, wsMessageBuffer);
+    IClassFactory* pICF = nullptr;
+    hr = CoGetClassObject(CLSID_AddObject, CLSCTX_LOCAL_SERVER, nullptr, IID_IClassFactory, (void**)&pICF);
+    ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
+    LOG("CoGetClassObject() returned 0x%08x: %ws", hr, wsMessageBuffer);
     if (FAILED(hr)) {
         CoUninitialize();
-        return -2;
+        exit(-2);
+    }
+
+    IAdd* pIAdd = nullptr;
+    hr = pICF->CreateInstance(nullptr, IID_IAdd, (void**)&pIAdd);
+    ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
+    LOG("IClassFactory->CreateInstance() returned 0x%08x: %ws", hr, wsMessageBuffer);
+    if (FAILED(hr)) {
+        pICF->Release();
+        CoUninitialize();
+        exit(-3);
     }
 
     long n1 = 100, n2 = 200;
-    pFastAddAlgorithm->SetFirstNumber(n1); //"->" overloading in action
-    pFastAddAlgorithm->SetSecondNumber(n2);
+    pIAdd->SetFirstNumber(n1);
+    pIAdd->SetSecondNumber(n2);
 
     long nSum = 0;
-    hr = pFastAddAlgorithm->PerformAddition(&nSum);
-    LOG("IAdd->PerformAddition() returned 0x%08x", hr);
+    hr = pIAdd->PerformAddition(&nSum);
+    ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
+    LOG("IAdd->PerformAddition() returned 0x%08x: %ws", hr, wsMessageBuffer);
     if (FAILED(hr)) {
+        pICF->Release();
+        pIAdd->Release();
         CoUninitialize();
-        return -3;
+        return -4;
     }
 
     std::cout << "Output after adding " << n1 << " & " << n2 << " is " << nSum << "\n";
@@ -130,10 +142,11 @@ int testComServer()
     //
     // Release the reference to the COM object when we're done
     //
-    pFastAddAlgorithm->Release();
+    pICF->Release();
+    pIAdd->Release();
 
     CoUninitialize();
 
     return 0;
 }
-#endif
+#endif // BUILD_CLIENT_WITH_IDL_HEADERS

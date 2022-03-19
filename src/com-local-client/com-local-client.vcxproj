@@ -156,10 +156,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\common\logger.cpp" />
-    <ClCompile Include="com-local-client.cpp" />
+    <ClCompile Include="..\common\utilities.cpp" />
+    <ClCompile Include="testclient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\logger.h" />
+    <ClInclude Include="..\common\utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
