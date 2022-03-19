@@ -29,7 +29,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	// TODO: elaborate
 	// Let's register the type lib to get the 'free' type library marsahler.
 	//ITypeLib* pTypeLib = nullptr;
-	//hr = LoadTypeLibEx(L"IAdd.tlb", REGKIND_REGISTER, &pTypeLib);
+	//hr = LoadTypeLibEx(L"AddObject.tlb", REGKIND_REGISTER, &pTypeLib);
 	//pTypeLib->Release();
 	//ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
 	//LOG("LoadTypeLibEx() returned 0x%08x: %ws", hr, wsMessageBuffer);

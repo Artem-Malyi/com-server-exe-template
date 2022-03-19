@@ -3,6 +3,7 @@ import "unknwn.idl";
 [
     object,
     uuid(FFBE6296-EA78-488A-AD5D-8FA1F279DE4D),
+    oleautomation,
     helpstring("Interface IAdd is used for implementing a SuperFast addition algorithm.")
 ]
 interface IAdd: IUnknown
