@@ -6,6 +6,7 @@
 #include "AddObj.h"
 #include "AddObject_i.c" // Contains the interface IIDs
 #include "utilities.h"
+#include "locks.h"
 
 #define DEBUG_LOGGER_ENABLED
 #define FILE_LOGGER_ENABLED
@@ -17,12 +18,18 @@
 //
 CAddObj::CAddObj() : m_nRefCount(0)
 {
-    InterlockedIncrement(&g_nComObjectsInUse);
+    Lock();
 }
 
 CAddObj::~CAddObj()
 {
-    InterlockedDecrement(&g_nComObjectsInUse);
+    UnLock();
+    MessageBox(
+        nullptr,
+        L"CAddObj is being destructed. Make sure you see this message, if not, you might have memory leak!",
+        L"CAddObj Destructor",
+        MB_OK | MB_SETFOREGROUND
+    );
 }
 
 //
@@ -55,7 +62,7 @@ HRESULT __stdcall CAddObj::QueryInterface(REFIID riid, void** ppvObject)
 
     WCHAR wsIIDName[MAX_PATH] = { 0 };
     GetInterfaceName(riid, wsIIDName, MAX_PATH);
-    LOG("!!! Not supported interface: %ws, %ws", wsIID, wsIIDName);
+    LOG("WARNING! Not supported interface: %ws, %ws", wsIID, wsIIDName);
 
     *ppvObject = nullptr;
     return E_NOINTERFACE;

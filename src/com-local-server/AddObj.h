@@ -25,5 +25,3 @@ private:
     long m_nX1, m_nX2; // operands for addition
     long m_nRefCount;  // for managing the reference count
 };
-
-extern long g_nComObjectsInUse;

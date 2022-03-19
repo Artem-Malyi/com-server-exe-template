@@ -14,6 +14,8 @@
 #define LOG_PREFIX "[ADDOBJ-EXPORTS]"
 #include "logger.h"
 
+extern long g_nComObjectsInUse;
+
 STDAPI DllGetClassObject(const CLSID& clsid, const IID& riid, void** ppvObject)
 {
     //

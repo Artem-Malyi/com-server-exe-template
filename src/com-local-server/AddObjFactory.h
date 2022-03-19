@@ -8,8 +8,8 @@
 class CAddObjFactory : public IClassFactory
 {
 public:
-    //CAddFactory::CAddFactory() : m_nRefCount(0) {}
     CAddObjFactory();
+    virtual ~CAddObjFactory();
 
     // IUnknown interface
     HRESULT __stdcall QueryInterface(REFIID riid, void** ppObj);

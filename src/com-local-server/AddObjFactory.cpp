@@ -6,6 +6,7 @@
 #include "AddObj.h"
 #include "AddObjFactory.h"
 #include "utilities.h"
+#include "locks.h"
 
 #define DEBUG_LOGGER_ENABLED
 #define FILE_LOGGER_ENABLED
@@ -13,9 +14,18 @@
 #include "logger.h"
 
 //
-// CAddObjFactory constructor
+// CAddObjFactory ctor / dtor
 //
 CAddObjFactory::CAddObjFactory() : m_nRefCount(0) {}
+
+CAddObjFactory::~CAddObjFactory() {
+    MessageBox(
+        nullptr,
+        L"CAddObjFactory is being destructed. Make sure you see this message, if not, you might have memory leak!",
+        L"CAddObjFactory Destructor",
+        MB_OK | MB_SETFOREGROUND
+    );
+}
 
 //
 // IUnknown interface implementation
@@ -47,7 +57,7 @@ HRESULT __stdcall CAddObjFactory::QueryInterface(REFIID riid, void** ppvObject)
 
     WCHAR wsIIDName[MAX_PATH] = { 0 };
     GetInterfaceName(riid, wsIIDName, MAX_PATH);
-    LOG("!!! Not supported interface: %ws, %ws", wsIID, wsIIDName);
+    LOG("WARNING! Not supported interface: %ws, %ws", wsIID, wsIIDName);
 
     *ppvObject = nullptr;
     return E_NOINTERFACE;
@@ -74,14 +84,6 @@ ULONG __stdcall CAddObjFactory::Release() {
 //
 HRESULT __stdcall CAddObjFactory::CreateInstance(_In_opt_ IUnknown* pUnkOuter, _In_ REFIID riid, _COM_Outptr_ void** ppvObject)
 {
-    //
-    // This method lets the client manufacture components en masse.
-    // The class factory provides a mechanism to control the way
-    // the component is created. Within the class factory the
-    // author of the component may decide to selectivey enable
-    // or disable creation as per license agreements
-    //
-
     LOG("Entering");
 
     WCHAR wsIID[GUID_STRING_LENGTH] = { 0 };
@@ -98,18 +100,29 @@ HRESULT __stdcall CAddObjFactory::CreateInstance(_In_opt_ IUnknown* pUnkOuter, _
     // Create and instance of the component
     //
     CAddObj* pObject = new CAddObj;
+    LOG("Created CAddObj instance: 0x%p", pObject);
     if (!pObject)
         return E_OUTOFMEMORY;
 
     //
     // Get the requested interface
     //
-    LOG("Created CAddObj instance: 0x%p, now requesting interface %ws", pObject, wsIID);
-    return pObject->QueryInterface(riid, ppvObject);
+    HRESULT hr = pObject->QueryInterface(riid, ppvObject);
+    LOG("CAddObj->QueryInterface(%ws) returned 0x%08x", wsIID, hr);
+    if (FAILED(hr))
+        delete pObject;
+
+    return hr;
 }
 
 HRESULT __stdcall CAddObjFactory::LockServer(_In_ BOOL fLock)
 {
-    LOG("Not implemented");
-    return E_NOTIMPL;
+    LOG("fLock: %d", fLock);
+
+    if (fLock)
+        Lock();
+    else
+        UnLock();
+
+    return S_OK;
 }
