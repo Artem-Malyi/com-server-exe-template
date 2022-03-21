@@ -29,7 +29,7 @@ CAddObjFactory::CAddObjFactory() : m_refCount(0)
 CAddObjFactory::~CAddObjFactory() {
 #ifdef _DEBUG
     MessageBox(
-        nullptr,
+        NULL,
         L"CAddObjFactory is being destructed.\nMake sure you see this message. If not, you might have memory leak!",
         g_wsMessageBoxTitle,
         MB_OK | MB_SETFOREGROUND
@@ -71,7 +71,7 @@ HRESULT __stdcall CAddObjFactory::QueryInterface(REFIID riid, void** ppvObject)
 
     LOG("WARNING! Not supported interface: %ws [%ws], refCount: %d", wsIID, wsIIDName, m_refCount);
 
-    *ppvObject = nullptr;
+    *ppvObject = NULL;
     return E_NOINTERFACE;
 }
 

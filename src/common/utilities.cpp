@@ -51,7 +51,7 @@ BOOL GetInterfaceName(_In_ REFIID riid, _Inout_ PWSTR wsGuidBuffer, _In_ SIZE_T 
         goto done;
 
     // Assuming the caller has already initialized the COM library
-    // CoInitialize(nullptr);
+    // CoInitialize(NULL);
 
     hr = StringFromIID(riid, &lpszGuid);
     if (FAILED(hr))

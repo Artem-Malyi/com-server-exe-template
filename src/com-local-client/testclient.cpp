@@ -98,12 +98,12 @@ int testComServer()
     LOG("Entering");
     WCHAR wsMessageBuffer[MAX_PATH] = { 0 };
 
-    HRESULT hr = CoInitialize(nullptr);
+    HRESULT hr = CoInitialize(NULL);
     if (FAILED(hr))
         return -1;
 
-    IClassFactory* pIcf = nullptr;
-    hr = CoGetClassObject(CLSID_AddObject, CLSCTX_LOCAL_SERVER, nullptr, IID_IClassFactory, (void**)&pIcf);
+    IClassFactory* pIcf = NULL;
+    hr = CoGetClassObject(CLSID_AddObject, CLSCTX_LOCAL_SERVER, NULL, IID_IClassFactory, (void**)&pIcf);
     ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
     LOG("CoGetClassObject() returned 0x%08x: %ws", hr, wsMessageBuffer);
     if (FAILED(hr)) {
@@ -111,8 +111,8 @@ int testComServer()
         return -2;
     }
 
-    IAdd* pIAdd = nullptr;
-    hr = pIcf->CreateInstance(nullptr, IID_IAdd, (void**)&pIAdd);
+    IAdd* pIAdd = NULL;
+    hr = pIcf->CreateInstance(NULL, IID_IAdd, (void**)&pIAdd);
     ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
     LOG("IClassFactory->CreateInstance() returned 0x%08x: %ws", hr, wsMessageBuffer);
     if (FAILED(hr)) {

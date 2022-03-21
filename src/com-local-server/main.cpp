@@ -24,8 +24,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 {
 	LOG("Entering, hInstance: 0x%p, lpCmdLine: %s, nCmdShow: %d", hInstance, lpCmdLine, nCmdShow);
 
-	WCHAR wsMessageBuffer[MAX_PATH] = { 0 };
+	WCHAR wsMessageBuffer[MAX_PATH] = { 0 }, wsMessage[MAX_PATH] = { 0 };
 	HRESULT hr = E_FAIL;
+    WCHAR wsImageName[MAX_PATH] = { 0 };
+    GetModuleFileNameW(GetModuleHandleW(NULL), wsImageName, MAX_PATH);
 
     // Handle [un]registration of COM server
     if (strstr(lpCmdLine, "/r") || strstr(lpCmdLine, "-r")) {
@@ -33,11 +35,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
         ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
         LOG("DllRegisterServer() returned 0x%08x: %ws", hr, wsMessageBuffer);
         if (FAILED(hr)) {
-            MessageBox(nullptr, L"The call to DllRegisterServer failed with error code 0x08x.", g_wsMessageBoxTitle, MB_OK | MB_ICONERROR);
+            StringCbPrintf(wsMessage, sizeof(wsMessage), L"The call to DllRegisterServer failed with error code 0x08x.", hr);
+            MessageBox(NULL, wsMessage, g_wsMessageBoxTitle, MB_OK | MB_ICONERROR);
             return -1;
         }
         else {
-            MessageBox(nullptr, L"DllRegisterServer in com....exe succeeded.", g_wsMessageBoxTitle, MB_OK | MB_ICONINFORMATION);
+            StringCbPrintf(wsMessage, sizeof(wsMessage), L"DllRegisterServer in %s succeeded.", wsImageName);
+            MessageBox(NULL, wsMessage, g_wsMessageBoxTitle, MB_OK | MB_ICONINFORMATION);
             return 0;
         }
     }
@@ -46,11 +50,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
         ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
         LOG("DllUnregisterServer() returned 0x%08x: %ws", hr, wsMessageBuffer);
         if (FAILED(hr)) {
-            MessageBox(nullptr, L"The call to DllUnregisterServer failed with error code 0x08x.", g_wsMessageBoxTitle, MB_OK | MB_ICONERROR);
+            StringCbPrintf(wsMessage, sizeof(wsMessage), L"The call to DllUnregisterServer failed with error code 0x08x.", hr);
+            MessageBox(NULL, wsMessage, g_wsMessageBoxTitle, MB_OK | MB_ICONERROR);
             return -1;
         }
         else {
-            MessageBox(nullptr, L"DllUnregisterServer in com....exe succeeded.", g_wsMessageBoxTitle, MB_OK | MB_ICONINFORMATION);
+            StringCbPrintf(wsMessage, sizeof(wsMessage), L"DllUnregisterServer in %s succeeded.", wsImageName);
+            MessageBox(NULL, wsMessage, g_wsMessageBoxTitle, MB_OK | MB_ICONINFORMATION);
             return 0;
         }
     }
@@ -61,9 +67,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
     // Started by SCM.
 #ifdef _DEBUG
-    MessageBox(nullptr, L"AddObj Local Server is registering.", g_wsMessageBoxTitle, MB_OK | MB_SETFOREGROUND);
+    MessageBox(NULL, L"AddObj Local Server is registering.", g_wsMessageBoxTitle, MB_OK | MB_SETFOREGROUND);
 #endif
-    hr = CoInitialize(nullptr);
+    hr = CoInitialize(NULL);
     ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
     LOG("CoInitialize() returned 0x%08x: %ws", hr, wsMessageBuffer);
     if (FAILED(hr))
@@ -104,7 +110,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     CoUninitialize();
 
 #ifdef _DEBUG
-		MessageBox(nullptr, L"AddObj Local Server is exiting", g_wsMessageBoxTitle, MB_OK | MB_SETFOREGROUND);
+		MessageBox(NULL, L"AddObj Local Server is exiting", g_wsMessageBoxTitle, MB_OK | MB_SETFOREGROUND);
 #endif
 
 	return 0;

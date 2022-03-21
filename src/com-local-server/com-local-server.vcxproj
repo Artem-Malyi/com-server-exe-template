@@ -118,6 +118,7 @@
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
       <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
       <FixedBaseAddress>false</FixedBaseAddress>
+      <AdditionalDependencies>Pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <OutputDirectory>$(IntDir)</OutputDirectory>
@@ -151,6 +152,7 @@ xcopy /f /y *.reg ..\..\out\</Command>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
       <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
       <FixedBaseAddress>false</FixedBaseAddress>
+      <AdditionalDependencies>Pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <OutputDirectory>$(IntDir)</OutputDirectory>
@@ -180,6 +182,7 @@ xcopy /f /y *.reg ..\..\out\</Command>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
       <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
       <FixedBaseAddress>false</FixedBaseAddress>
+      <AdditionalDependencies>Pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <OutputDirectory>$(IntDir)</OutputDirectory>
@@ -214,6 +217,7 @@ xcopy /f /y *.reg ..\..\out\</Command>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
       <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
       <FixedBaseAddress>false</FixedBaseAddress>
+      <AdditionalDependencies>Pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <OutputDirectory>$(IntDir)</OutputDirectory>
