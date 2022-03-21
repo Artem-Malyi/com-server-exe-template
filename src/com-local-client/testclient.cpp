@@ -33,13 +33,13 @@ int testComServer();
     #ifdef _DEBUG
         #import "com-local-server64d.exe"
     #else
-        #import "com-local-server64.dll"
+        #import "com-local-server64.exe"
     #endif
 #else
     #ifdef _DEBUG
-        #import "com-local-server32d.dll"
+        #import "com-local-server32d.exe"
     #else
-        #import "com-local-server32.dll"
+        #import "com-local-server32.exe"
     #endif
 #endif
 #endif // BUILD_CLIENT_WITH_TYPELIB

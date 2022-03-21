@@ -44,11 +44,11 @@ STDAPI AddProgIdEntry(LPOLESTR szClassId)
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\ProgId\CLSID
+    // HKLM\Software\Classes\ProgId\CLSID
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szProgIdRegKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hProgIdKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\ProgId\CLSID @=ClassGUID
+    // HKLM\Software\Classes\ProgId\CLSID @=ClassGUID
     lRet = RegSetValueEx(hProgIdKey, NULL, 0, REG_SZ, (PBYTE)szClassId, static_cast<DWORD>(_tcslen(szClassId) * sizeof(TCHAR)));
     OnErrorJump(hr, lRet, done);
 
@@ -70,43 +70,43 @@ STDAPI AddClassIdEntry(LPOLESTR szClassId, LPOLESTR szTypelibId, LPTSTR szFileNa
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\CLSID\ClassGUID
+    // HKLM\Software\Classes\CLSID\ClassGUID
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szClassIdRegKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hClsidKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\CLSID\ClassGUID @=ClassDescription
+    // HKLM\Software\Classes\CLSID\ClassGUID @=ClassDescription
     lRet = RegSetValueEx(hClsidKey, NULL, 0, REG_SZ, (PBYTE)g_szClassDescription, sizeof(g_szClassDescription));
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\CLSID\ClassGUID\LocalServer32
+    // HKLM\Software\Classes\CLSID\ClassGUID\LocalServer32
     lRet = RegCreateKeyEx(hClsidKey, g_szLocalServer, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, NULL, &hLocalServerKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\CLSID\ClassGUID\LocalServer32 @=PathToDll
+    // HKLM\Software\Classes\CLSID\ClassGUID\LocalServer32 @=PathToDll
     lRet = RegSetValueEx(hLocalServerKey, NULL, 0, REG_SZ, (PBYTE)szFileName, static_cast<DWORD>(_tcslen(szFileName) * sizeof(TCHAR)));
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\CLSID\ClassGUID\LocalServer32 ThreadingModel=Both
+    // HKLM\Software\Classes\CLSID\ClassGUID\LocalServer32 ThreadingModel=Both
     lRet = RegSetValueEx(hLocalServerKey, g_szThreadingModel, 0, REG_SZ, (PBYTE)g_szBoth, sizeof(g_szBoth));
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\CLSID\ClassGUID\Programmable
+    // HKLM\Software\Classes\CLSID\ClassGUID\Programmable
     lRet = RegCreateKeyEx(hClsidKey, g_szProgrammable, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, NULL, &hProgrammableKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\CLSID\ClassGUID\TypeLib
+    // HKLM\Software\Classes\CLSID\ClassGUID\TypeLib
     lRet = RegCreateKeyEx(hClsidKey, g_szTypeLib, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, NULL, &hTypelibKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\CLSID\ClassGUID\TypeLib @=TypelibGUID
+    // HKLM\Software\Classes\CLSID\ClassGUID\TypeLib @=TypelibGUID
     lRet = RegSetValueEx(hTypelibKey, NULL, 0, REG_SZ, (PBYTE)szTypelibId, static_cast<DWORD>(_tcslen(szTypelibId) * sizeof(TCHAR)));
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\CLSID\ClassGUID\Version
+    // HKLM\Software\Classes\CLSID\ClassGUID\Version
     lRet = RegCreateKeyEx(hClsidKey, g_szVersion, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, NULL, &hVersionKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\CLSID\ClassGUID\Version @=1.0
+    // HKLM\Software\Classes\CLSID\ClassGUID\Version @=1.0
     lRet = RegSetValueEx(hVersionKey, NULL, 0, REG_SZ, (PBYTE)g_szVersionValue, sizeof(g_szVersionValue));
     OnErrorJump(hr, lRet, done);
 
@@ -149,7 +149,7 @@ STDAPI AddTypeLibIdEntry(LPOLESTR szTypelibId, LPOLESTR szFilePath)
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szTypelibIdKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hTypelibIdKey, NULL);
     OnErrorJump(hr, lRet, done);
 
@@ -157,11 +157,11 @@ STDAPI AddTypeLibIdEntry(LPOLESTR szTypelibId, LPOLESTR szFilePath)
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID\1.0
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID\1.0
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szTypelibVersionKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hTypelibVersionKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID\1.0 @=TypelibDescription
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID\1.0 @=TypelibDescription
     lRet = RegSetValueEx(hTypelibVersionKey, NULL, 0, REG_SZ, (PBYTE)g_szTypelibDescription, sizeof(g_szTypelibDescription));
     OnErrorJump(hr, lRet, done);
 
@@ -169,7 +169,7 @@ STDAPI AddTypeLibIdEntry(LPOLESTR szTypelibId, LPOLESTR szFilePath)
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID\1.0\0
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID\1.0\0
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szTypelibLocaleKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hTypelibLocaleKey, NULL);
     OnErrorJump(hr, lRet, done);
 
@@ -177,11 +177,11 @@ STDAPI AddTypeLibIdEntry(LPOLESTR szTypelibId, LPOLESTR szFilePath)
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID\1.0\0\win64
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID\1.0\0\win64
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szTypelibPlatformKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hTypelibPlatformKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID\1.0\0\win64 @=PathToLocalServerExe
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID\1.0\0\win64 @=PathToLocalServerExe
     lRet = RegSetValueEx(hTypelibPlatformKey, NULL, 0, REG_SZ, (PBYTE)szFilePath, static_cast<DWORD>(_tcslen(szFilePath) * sizeof(TCHAR)));
     OnErrorJump(hr, lRet, done);
 
@@ -189,11 +189,11 @@ STDAPI AddTypeLibIdEntry(LPOLESTR szTypelibId, LPOLESTR szFilePath)
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID\1.0\FLAGS
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID\1.0\FLAGS
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szTypelibFlagsKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hTypelibFlagsKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID\1.0\FLAGS @=Flags
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID\1.0\FLAGS @=Flags
     lRet = RegSetValueEx(hTypelibFlagsKey, NULL, 0, REG_SZ, (PBYTE)L"0", sizeof(TCHAR));
     OnErrorJump(hr, lRet, done);
 
@@ -201,11 +201,11 @@ STDAPI AddTypeLibIdEntry(LPOLESTR szTypelibId, LPOLESTR szFilePath)
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID\1.0\HELPDIR
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID\1.0\HELPDIR
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szTypelibHelpDirKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hTypelibHelpDirKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID\1.0\HELPDIR @=PathToLocalServerDirectory
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID\1.0\HELPDIR @=PathToLocalServerDirectory
     lRet = RegSetValueEx(hTypelibHelpDirKey, NULL, 0, REG_SZ, (PBYTE)szFileDirectory, sizeof(szFileDirectory));
     OnErrorJump(hr, lRet, done);
 
@@ -245,11 +245,11 @@ STDAPI AddInterfaceIdEntry(LPOLESTR szInterfaceId, LPOLESTR szTypelibId)
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\Interface\InterfaceGUID
+    // HKLM\Software\Classes\Interface\InterfaceGUID
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szInterfaceIdRegKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hInterfaceIdKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\Interface\InterfaceGUID @=InterfaceName
+    // HKLM\Software\Classes\Interface\InterfaceGUID @=InterfaceName
     lRet = RegSetValueEx(hInterfaceIdKey, NULL, 0, REG_SZ, (PBYTE)g_szInterfaceName, sizeof(g_szInterfaceName));
     OnErrorJump(hr, lRet, done);
 
@@ -257,15 +257,15 @@ STDAPI AddInterfaceIdEntry(LPOLESTR szInterfaceId, LPOLESTR szTypelibId)
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\Interface\InterfaceGUID\TypeLib
+    // HKLM\Software\Classes\Interface\InterfaceGUID\TypeLib
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szTypelibRegKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hTypelibKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\Interface\InterfaceGUID\TypeLib @=TypelibGuid
+    // HKLM\Software\Classes\Interface\InterfaceGUID\TypeLib @=TypelibGuid
     lRet = RegSetValueEx(hTypelibKey, NULL, 0, REG_SZ, (PBYTE)szTypelibId, static_cast<DWORD>(_tcslen(szTypelibId) * sizeof(TCHAR)));
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\Interface\InterfaceGUID\TypeLib Version=1.0
+    // HKLM\Software\Classes\Interface\InterfaceGUID\TypeLib Version=1.0
     lRet = RegSetValueEx(hTypelibKey, g_szVersion, 0, REG_SZ, (PBYTE)g_szVersionValue, sizeof(g_szVersionValue));
     OnErrorJump(hr, lRet, done);
 
@@ -273,11 +273,11 @@ STDAPI AddInterfaceIdEntry(LPOLESTR szInterfaceId, LPOLESTR szTypelibId)
     if (FAILED(hr))
         goto done;
 
-    // HKCU\Software\Classes\Interface\InterfaceGUID\ProxyStubClsid32
+    // HKLM\Software\Classes\Interface\InterfaceGUID\ProxyStubClsid32
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, szProxyStubKey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | KEY_CREATE_SUB_KEY, NULL, &hProxyStubKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\Interface\InterfaceGUID\ProxyStubClsid32 @=ProxyCLSID
+    // HKLM\Software\Classes\Interface\InterfaceGUID\ProxyStubClsid32 @=ProxyCLSID
     lRet = RegSetValueEx(hProxyStubKey, NULL, 0, REG_SZ, (PBYTE)proxyClsid, sizeof(proxyClsid));
     OnErrorJump(hr, lRet, done);
 
@@ -374,11 +374,11 @@ STDAPI RemoveProgIdEntry()
     LONG lRet = ERROR_SUCCESS;
     HKEY hProgIdKey = NULL;
 
-    // HKCU\Software\Classes
+    // HKLM\Software\Classes
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes"), 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hProgIdKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\ProgID
+    // HKLM\Software\Classes\ProgID
     lRet = RegDeleteTree(hProgIdKey, g_szProgId);
     OnErrorJump(hr, lRet, done);
 
@@ -395,11 +395,11 @@ STDAPI RemoveClassIdEntry(LPOLESTR szClassId)
     LONG lRet = ERROR_SUCCESS;
     HKEY hClsidKey = NULL;
 
-    // HKCU\Software\Classes\CLSID
+    // HKLM\Software\Classes\CLSID
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\CLSID"), 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hClsidKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\CLSID\ClassGUID
+    // HKLM\Software\Classes\CLSID\ClassGUID
     lRet = RegDeleteTree(hClsidKey, szClassId);
     OnErrorJump(hr, lRet, done);
 
@@ -416,11 +416,11 @@ STDAPI RemoveTypeLibIdEntry(LPOLESTR szTypelibId)
     LONG lRet = ERROR_SUCCESS;
     HKEY hTypelibKey = NULL;
 
-    // HKCU\Software\Classes\TypeLib
+    // HKLM\Software\Classes\TypeLib
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\TypeLib"), 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hTypelibKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\TypeLib\TypeLibGUID
+    // HKLM\Software\Classes\TypeLib\TypeLibGUID
     lRet = RegDeleteTree(hTypelibKey, szTypelibId);
     OnErrorJump(hr, lRet, done);
 
@@ -437,11 +437,11 @@ STDAPI RemoveInterfaceIdEntry(LPOLESTR szInterfaceId)
     LONG lRet = ERROR_SUCCESS;
     HKEY hInterfaceKey = NULL;
 
-    // HKCU\Software\Classes\Interface
+    // HKLM\Software\Classes\Interface
     lRet = RegCreateKeyEx(HKEY_LOCAL_MACHINE, TEXT("Software\\Classes\\Interface"), 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hInterfaceKey, NULL);
     OnErrorJump(hr, lRet, done);
 
-    // HKCU\Software\Classes\Interface\InterfaceGUID
+    // HKLM\Software\Classes\Interface\InterfaceGUID
     lRet = RegDeleteTree(hInterfaceKey, szInterfaceId);
     OnErrorJump(hr, lRet, done);
 
