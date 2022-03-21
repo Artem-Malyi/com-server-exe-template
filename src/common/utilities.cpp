@@ -50,7 +50,8 @@ BOOL GetInterfaceName(_In_ REFIID riid, _Inout_ PWSTR wsGuidBuffer, _In_ SIZE_T 
     if (!wsGuidBuffer || wsGuidBufferSize <= 0)
         goto done;
 
-    CoInitialize(NULL);
+    // Assuming the caller has already initialized the COM library
+    // CoInitialize(nullptr);
 
     hr = StringFromIID(riid, &lpszGuid);
     if (FAILED(hr))
@@ -74,9 +75,7 @@ done:
     if (lpszGuid != NULL)
         CoTaskMemFree(lpszGuid);
 
-    CoUninitialize();
-
-    LOG("Exiting with 0x%08x", lRet);
+    // CoUninitialize();
 
     return (lRet == ERROR_SUCCESS);
 }

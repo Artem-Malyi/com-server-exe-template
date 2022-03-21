@@ -11,8 +11,11 @@
 #define LOG_PREFIX "[ADDOBJ-WINMAIN]"
 #include "logger.h"
 
-// global counter for locks & active objects.
-long g_nComObjectsInUse = 0;
+// Global COM server variables.
+ULONG g_LockCount = 0;		// Represents the number of COM server locks.
+ULONG g_ObjectCount = 0;	// Represents the number of living COM objects.
+
+const WCHAR* g_wsMessageBoxTitle = L"SuperFast.AddObj COM LocalServer Message";
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -24,27 +27,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
 	LOG("CoInitialize() returned 0x%08x: %ws", hr, wsMessageBuffer);
 	if (FAILED(hr))
-		exit(-1);
-
-	// TODO: elaborate
-	// Let's register the type lib to get the 'free' type library marsahler.
-	//ITypeLib* pTypeLib = nullptr;
-	//hr = LoadTypeLibEx(L"AddObject.tlb", REGKIND_REGISTER, &pTypeLib);
-	//pTypeLib->Release();
-	//ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
-	//LOG("LoadTypeLibEx() returned 0x%08x: %ws", hr, wsMessageBuffer);
-	//if (FAILED(hr)) {
-	//	CoUninitialize();
-	//	exit(-2);
-	//}
+		return -1;
 
 	// Let's see if we were started by SCM.
 	if (strstr(lpCmdLine, "/Embedding") || strstr(lpCmdLine, "-Embedding"))
 	{
-		// for debug
-		MessageBox(nullptr, L"AddObj Server[LOCAL] is registering its classes", L"SuperFast.AddObj COM LocalServer Message", MB_OK | MB_SETFOREGROUND);
+#ifdef _DEBUG
+		MessageBox(nullptr, L"AddObj Local Server is registering.", g_wsMessageBoxTitle, MB_OK | MB_SETFOREGROUND);
+#endif
 
 		// Create the AddObj factory class object.
+		// Note, that it will manage its reference count and delete itself when refCount == 0.
+		// So, this object MUST be created on the heap.
 		CAddObjFactory* pFactory = new CAddObjFactory();
 
 		// Register the AddObj Factory.
@@ -55,7 +49,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			ErrorDescription(hr, wsMessageBuffer, _countof(wsMessageBuffer));
 			LOG("CoRegisterClassObject() returned 0x%08x: %ws", hr, wsMessageBuffer);
 			CoUninitialize();
-			exit(-3);
+			return -2;
 		}
 
 		// Now just run until a quit message is sent,
@@ -77,6 +71,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	// Terminate COM.
 	CoUninitialize();
-	MessageBox(nullptr, L"AddObj Server[LOCAL] is exiting", L"SuperFast.AddObj COM LocalServer Message", MB_OK | MB_SETFOREGROUND);
+	MessageBox(nullptr, L"AddObj Local Server is exiting", g_wsMessageBoxTitle, MB_OK | MB_SETFOREGROUND);
 	return 0;
 }

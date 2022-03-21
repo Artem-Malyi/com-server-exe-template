@@ -234,7 +234,6 @@ xcopy /f /y *.reg ..\..\out\</Command>
     <ClInclude Include="..\common\utilities.h" />
     <ClInclude Include="AddObj.h" />
     <ClInclude Include="AddObjFactory.h" />
-    <ClInclude Include="locks.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\utilities.cpp" />
@@ -247,7 +246,6 @@ xcopy /f /y *.reg ..\..\out\</Command>
     </ClCompile>
     <ClCompile Include="AddObj.cpp" />
     <ClCompile Include="AddObjFactory.cpp" />
-    <ClCompile Include="locks.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="exports.cpp" />
     <ClCompile Include="registry.cpp" />

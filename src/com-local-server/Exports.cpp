@@ -14,7 +14,8 @@
 #define LOG_PREFIX "[ADDOBJ-EXPORTS]"
 #include "logger.h"
 
-extern long g_nComObjectsInUse;
+extern ULONG g_LockCount;
+extern ULONG g_ObjectCount;
 
 STDAPI DllGetClassObject(const CLSID& clsid, const IID& riid, void** ppvObject)
 {
@@ -65,10 +66,14 @@ STDAPI DllCanUnloadNow()
     //
     // A DLL is no longer in use when it is not managing any existing objects
     // (the reference count on all of its objects is 0).
-    // We will examine the value of g_nComObjectsInUse
+    // We will examine the value of g_ObjectCount
     //
 
-    LOG("COM objects in use: %d", g_nComObjectsInUse);
+    LOG("COM objects in use: %d, COM server locks: %d", g_ObjectCount, g_LockCount);
 
-    return 0 == g_nComObjectsInUse ? S_OK : S_FALSE;
+    // We can unload if we have no objects and no locks.
+    if (g_LockCount == 0 && g_ObjectCount == 0)
+        return S_OK;
+    else
+        return E_FAIL;
 }

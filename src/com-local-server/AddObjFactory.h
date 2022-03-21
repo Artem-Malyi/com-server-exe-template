@@ -21,5 +21,5 @@ public:
     HRESULT __stdcall LockServer(_In_ BOOL fLock);
 
 private:
-    long m_nRefCount;
+    ULONG m_refCount;
 };
