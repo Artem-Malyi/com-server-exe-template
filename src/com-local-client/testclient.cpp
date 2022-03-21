@@ -1,8 +1,8 @@
 // com-local-client.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-//#define BUILD_CLIENT_WITH_TYPELIB
-#define BUILD_CLIENT_WITH_IDL_HEADERS
+#define BUILD_CLIENT_WITH_TYPELIB
+//#define BUILD_CLIENT_WITH_IDL_HEADERS
 
 #include <iostream>
 #include <objbase.h>
@@ -58,7 +58,7 @@ int testComServer()
     if (FAILED(hr))
         return -1;
 
-    WCHAR wsMessageBuffer[512] = { 0 };
+    WCHAR wsMessageBuffer[MAX_PATH] = { 0 };
 
     {
         SuperFastMathLib::IAddPtr pFastAddAlgorithm;
