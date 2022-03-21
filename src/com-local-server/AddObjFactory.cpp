@@ -15,7 +15,7 @@
 extern ULONG g_ObjectCount;
 extern ULONG g_LockCount;
 
-extern const WCHAR* g_wsMessageBoxTitle;
+extern PCWSTR g_wsMessageBoxTitle;
 
 //
 // CAddObjFactory ctor / dtor

@@ -14,7 +14,7 @@
 
 extern ULONG g_ObjectCount;
 
-extern const WCHAR* g_wsMessageBoxTitle;
+extern PCWSTR g_wsMessageBoxTitle;
 
 //
 // CAddObj constructor/destructor
@@ -27,12 +27,14 @@ CAddObj::CAddObj() : m_refCount(0)
 
 CAddObj::~CAddObj()
 {
+#ifdef _DEBUG
     MessageBox(
         nullptr,
         L"CAddObj is being destructed.\nMake sure you see this message. If not, you might have memory leak!",
         g_wsMessageBoxTitle,
         MB_OK | MB_SETFOREGROUND
     );
+#endif
     InterlockedDecrement(&g_ObjectCount);
     LOG("Destructing instance: 0x%p", this);
 }
