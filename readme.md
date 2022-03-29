@@ -4,10 +4,16 @@ Minimalistic solution for the classic COM Local Server (exe) implementing IUnkno
 
 For both: x64 and x86.
 
+Supports only Standard marshaling, PSOAInterface from oleaut32.dll.
+
+For Custom marshaling, see the following:
+ * https://social.msdn.microsoft.com/Forums/en-US/65757cf8-12d9-422a-a444-f7a5878c2bf4/how-to-implement-stub-for-custom-marshaling
+ * http://thrysoee.dk/InsideCOM+/ch15b.htm
+
 Inspired by:
- - https://www.codeproject.com/Articles/8679/Building-a-LOCAL-COM-Server-and-Client-A-Step-by-S
- - https://www.akella.org/homepages/mani/documents/secdocs/ASP.net/ComAndDotNetInteroperability.pdf
- - https://github.com/Apress/com-.net-interoperability
+ * https://www.codeproject.com/Articles/8679/Building-a-LOCAL-COM-Server-and-Client-A-Step-by-S
+ * https://www.akella.org/homepages/mani/documents/secdocs/ASP.net/ComAndDotNetInteroperability.pdf
+ * https://github.com/Apress/com-.net-interoperability
 
 Usage:
 1. register COM server with `com-server.exe /r`
